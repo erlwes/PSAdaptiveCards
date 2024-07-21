@@ -10,6 +10,8 @@ New-AdaptiveCard -BodyContent $Header, $Table
 ```
 ![image](https://github.com/user-attachments/assets/974bc543-54f9-4cee-b840-4f0ff5265e3f)
 
+* Tabled is created from any PowerShell-object first by adding all noteproperties as headers, then adding all objects as additional rows
+* Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
 ## Example 2 - Header and a "Fact set"
 ```
