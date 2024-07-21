@@ -18,7 +18,8 @@ Parameters:
 Usage:
 ```
 $cardContent = @(
-    New-TextBlock -Text "Hello, Teams!"
+    New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
+    New-TextBlock -Text "Lorem Ipsum Dolar ... "
 )
 $adaptiveCard = New-AdaptiveCard -BodyContent $cardContent
 ```
@@ -100,10 +101,12 @@ Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped"
 
 ### Example 1 - Header and a table of services
 ```
-$Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
 $Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
-$Table = $Services | New-Table -HighlightValueMatch 'Stopped' -HighlightValueStyle 'attention' -headerRowStyle 'accent' -gridStyle 'accent'
-New-AdaptiveCard -BodyContent $Header, $Table
+$cardContent = @(
+    New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
+    $Services | New-Table -HighlightValueMatch 'Stopped' -HighlightValueStyle 'attention' -headerRowStyle 'accent' -gridStyle 'accent'
+)
+New-AdaptiveCard -BodyContent $cardContent
 ```
 ![image](https://github.com/user-attachments/assets/974bc543-54f9-4cee-b840-4f0ff5265e3f)
 
@@ -119,7 +122,7 @@ $exampleObjects = @(
 )
 $Factset = $exampleObjects | New-FactSet -TitleProperty Name -ValueProperty Description
 
-New-AdaptiveCard -BodyContent $Header, $Factset | CLIP
+New-AdaptiveCard -BodyContent $Header, $Factset
 ```
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
