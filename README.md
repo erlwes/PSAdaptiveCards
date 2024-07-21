@@ -8,8 +8,10 @@ The PSAdaptiveCard PowerShell module designed to create JSON payloads for Adapti
 
 ### New-AdaptiveCard
 Description: Creates the structure for an Adaptive Card.
+
 Parameters:
-BodyContent: An array of card elements (e.g., text blocks, fact sets) to be included in the body of the card.
+_BodyContent_: An array of card elements (e.g., text blocks, fact sets) to be included in the body of the card.
+
 Usage:
 ```
 $cardContent = @(
@@ -22,16 +24,16 @@ $adaptiveCard = New-AdaptiveCard -BodyContent $cardContent
 Description: Creates a text block element for an Adaptive Card.
 
 Parameters:
-IsSubtle: Boolean indicating if the text should be subtle.
-separator: Boolean indicating if there should be a separator line.
-MaxLines: Maximum number of lines to display.
-Size: Size of the text (default, small, medium, large, extraLarge).
-Weight: Weight of the text (default, lighter, bolder).
-Wrap: Boolean indicating if the text should wrap.
-Color: Color of the text (default, dark, light, accent, good, warning, attention).
-Fonttype: Font type of the text (default, monospace).
-HorizontalAlignment: Horizontal alignment of the text (left, center, right).
-Text (mandatory): The text content.
+_IsSubtle_: Boolean indicating if the text should be subtle.
+_separator_: Boolean indicating if there should be a separator line.
+_MaxLines_: Maximum number of lines to display.
+_Size_: Size of the text (default, small, medium, large, extraLarge).
+_Weight_: Weight of the text (default, lighter, bolder).
+_Wrap_: Boolean indicating if the text should wrap.
+_Color_: Color of the text (default, dark, light, accent, good, warning, attention).
+_Fonttype_: Font type of the text (default, monospace).
+_HorizontalAlignment_: Horizontal alignment of the text (left, center, right).
+_Text_ (mandatory): The text content.
 
 Usage:
 ```
@@ -42,9 +44,9 @@ $textBlock = New-TextBlock -Text "This is a text block" -Size "large" -Weight "b
 Description: Creates a fact set element for an Adaptive Card, typically used to present key-value pairs.
 
 Parameters:
-Object: Input object from the pipeline.
-TitleProperty (mandatory): The property of the object to use as the title.
-ValueProperty (mandatory): The property of the object to use as the value.
+_Object_: Input object from the pipeline.
+_TitleProperty_ (mandatory): The property of the object to use as the title.
+_ValueProperty_ (mandatory): The property of the object to use as the value.
 
 Usage:
 ```
@@ -55,15 +57,15 @@ Get-Service | Select-Object -First 2 | New-FactSet -TitleProperty Name -ValuePro
 Description: Creates a table element for an Adaptive Card, dynamically defining columns based on object properties and supports highlighting specific cell values.
 
 Parameters:
-Object: Input object from the pipeline.
-HighlightValueMatch: Text to match for highlighting.
-HighlightValueStyle: Style to apply for the highlight (dark, light, accent, good, warning, attention).
-firstRowAsHeader: Boolean to specify if the first row is a header.
-headerRowStyle: Style for the header row.
-showGridLines: Boolean to show grid lines.
-gridStyle: Style for the grid.
-horizontalCellContentAlignment: Horizontal alignment for cell content (left, center, right).
-verticalCellContentAlignment: Vertical alignment for cell content (top, center, bottom).
+_Object_: Input object from the pipeline.
+_HighlightValueMatch_: Text to match for highlighting.
+_HighlightValueStyle_: Style to apply for the highlight (dark, light, accent, good, warning, attention).
+_firstRowAsHeader_: Boolean to specify if the first row is a header.
+_headerRowStyle_: Style for the header row.
+_showGridLines_: Boolean to show grid lines.
+_gridStyle_: Style for the grid.
+_horizontalCellContentAlignment_: Horizontal alignment for cell content (left, center, right).
+_verticalCellContentAlignment_: Vertical alignment for cell content (top, center, bottom).
 
 Usage:
 ```
