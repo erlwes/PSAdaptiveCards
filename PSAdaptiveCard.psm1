@@ -1,3 +1,34 @@
+<#
+.SYNOPSIS
+    Module for creating and managing Adaptive Cards for Microsoft Teams.
+
+.DESCRIPTION
+    This module provides functions to generate JSON payloads for Adaptive Cards, Fact Sets, and Tables.
+    These payloads can be used to post messages to Microsoft Teams channels via Workflow webhooks.
+
+.AUTHOR
+    EW
+
+.COPYRIGHT
+    No
+
+.LICENSE
+    MIT
+
+.VERSION
+    1.0.0
+
+.NOTES
+    - Requires PowerShell 5.1 or later.
+    - For more information, see the Adaptive Cards documentation at https://adaptivecards.io.
+
+.EXAMPLE
+    $cardContent = @(
+        New-TextBlock -Text "Hello, Teams!"
+    )
+    $JSONPayload = New-AdaptiveCard -BodyContent $cardContent
+#>
+
 function New-AdaptiveCard {
     param (
         [Parameter(Mandatory = $true)]
