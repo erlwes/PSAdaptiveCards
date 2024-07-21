@@ -96,9 +96,6 @@ Usage:
 Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped" -HighlightValueStyle "attention" -firstRowAsHeader $true -showGridLines $false -gridStyle "accent" -horizontalCellContentAlignment "center" -verticalCellContentAlignment "top"
 ```
 
-Usage in Microsoft Teams:
-The JSON payloads created by this module can be used to post messages to Microsoft Teams channels using Workflow webhooks. This allows for automation and dynamic content creation in Teams environments, enhancing communication and collaboration.
-
 ## Examples, combined
 
 ### Example 1 - Header and a table of services
