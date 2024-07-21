@@ -250,5 +250,9 @@ function New-Table {
     }
 }
 
-#New-Item -Type Directory -Path "$env:USERPROFILE\Documents\PowerShell\Modules\PSAdaptiveCard"
-#New-Item -Type File -Path "$env:USERPROFILE\Documents\PowerShell\Modules\PSAdaptiveCard\PSAdaptiveCard.psm1"
+#INSTALL MODULE:
+#$modulePath = ($env:PSModulePath -split ';' | Select-Object -First 1)
+#New-Item -Type Directory -Path "$modulePath\PSAdaptiveCard"
+#New-Item -Type File -Path "$modulePath\PSAdaptiveCard\PSAdaptiveCard.psm1"
+#Copy content of this script to '...PSAdaptiveCard.psm1' and save
+#Import-Module PSAdaptiveCard
