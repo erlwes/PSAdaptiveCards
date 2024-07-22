@@ -22,13 +22,11 @@ New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI
 ```
 This results in the following message to your Teams-channel:
 ![image](https://github.com/user-attachments/assets/8ceb598e-2621-4523-bb1c-f674de02a2dc)
-Notice that then function supports highlighting cells matching a text of choosing ("stopped" is highlighted using style "attention")
 
 
 ## Functions:
 
-
-### New-AdaptiveCard
+#### New-AdaptiveCard
 Description: Creates the structure for an Adaptive Card.
 
 Parameters:
@@ -44,7 +42,7 @@ $cardContent = @(
 New-AdaptiveCard -BodyContent $cardContent
 ```
 
-### Send-JsonToTeamsWebhook
+#### Send-JsonToTeamsWebhook
 Description: Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and post it.
 
 Parameters:
@@ -66,7 +64,7 @@ $cardContent = @(
 New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
 ```
 
-### New-TextBlock
+#### New-TextBlock
 Description: Creates a text block element for an Adaptive Card.
 
 Parameters:
@@ -95,7 +93,7 @@ Usage:
 $textBlock = New-TextBlock -Text "This is a text block" -Size "large" -Weight "bolder"
 ```
 
-### New-FactSet
+#### New-FactSet
 Description: Creates a fact set element for an Adaptive Card, typically used to present key-value pairs.
 
 Parameters:
@@ -111,7 +109,7 @@ Usage:
 Get-Service | Select-Object -First 2 | New-FactSet -TitleProperty Name -ValueProperty Status
 ```
 
-### New-Table
+#### New-Table
 Description: Creates a table element for an Adaptive Card, dynamically defining columns based on object properties and supports highlighting specific cell values.
 
 Parameters:
@@ -141,7 +139,7 @@ Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped"
 
 ## Examples, combined
 
-### Example 1 - Header and a table of services
+#### Example 1 - Header and a table of services
 ```
 $Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
 $cardContent = @(
@@ -155,7 +153,7 @@ New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
 * Tabled is created from any PowerShell-object first by adding all noteproperties as headers, then adding all objects as additional rows
 * Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
-### Example 2 - Header and a "Fact set"
+#### Example 2 - Header and a "Fact set"
 ```
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Employees'
 $exampleObjects = @(
@@ -169,7 +167,7 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-### Example 3 - Header, sub-headers and lists
+#### Example 3 - Header, sub-headers and lists
 ```
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
