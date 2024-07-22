@@ -27,11 +27,11 @@ This results in the following message to your Teams-channel:
 ## Functions:
 
 #### New-AdaptiveCard
-Description: Creates the structure for an Adaptive Card.
+Creates the structure for an Adaptive Card.
 
-Parameters:
-
->  _BodyContent_: An array of card elements (e.g., text blocks, fact sets) to be included in the body of the card.
+Parameter | Description
+--- | ---
+BodyContent (mandatory) | An array of card elements (e.g., text blocks, fact sets) to be included in the body of the card.
 
 Usage:
 ```PowerShell
@@ -47,7 +47,7 @@ Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and po
 
 Parameter | Description
 --- | ---
-WebhookURI (mandatory) | Specifies the Microsoft Teams webhook URL to which the adaptive card will be sent
+webhookURI (mandatory) | Specifies the Microsoft Teams webhook URL to which the adaptive card will be sent
 adaptiveCard (mandatory) | Accept pipeline input, specifies the adaptive card content as a PowerShell custom object (pscustomobject)
 fullWidth | This switch parameter specifies whether the adaptive card should be displayed at full width in Teams. If this switch is included, the card's width is set to "Full"
 onlyConvertToJson | This switch parameter specifies whether the function should only convert the adaptive card to JSON and output it, without sending it to the Teams webhook
@@ -66,15 +66,15 @@ Creates a text block element for an Adaptive Card.
 
 Parameter | Description
 --- | ---
-Text (mandatory) | The text content
-Size | Size of the text (default, small, medium, large, extraLarge)
-Weight | Weight of the text (default, lighter, bolder)
-Color | Color of the text (default, dark, light, accent, good, warning, attention)
-Wrap | Boolean indicating if the text should wrap
-MaxLines | Maximum number of lines to display
-IsSubtle | Boolean indicating if the text should be subtle
+text (mandatory) | The text content
+size | Size of the text (default, small, medium, large, extraLarge)
+weight | Weight of the text (default, lighter, bolder)
+color | Color of the text (default, dark, light, accent, good, warning, attention)
+wrap | Boolean indicating if the text should wrap
+maxLines | Maximum number of lines to display
+isSubtle | Boolean indicating if the text should be subtle
 separator | Boolean indicating if there should be a separator line
-HorizontalAlignment | Horizontal alignment of the text (left, center, right)
+horizontalAlignment | Horizontal alignment of the text (left, center, right)
 
 Usage:
 ```PowerShell
@@ -86,9 +86,9 @@ Creates a fact set element for an Adaptive Card, typically used to present key-v
 
 Parameter | Description
 --- | ---
-Object (mandatory) | Input object from the pipeline
-TitleProperty (mandatory) | The property of the object to use as the title
-ValueProperty (mandatory) | The property of the object to use as the value
+object (mandatory) | Input object from the pipeline
+titleProperty (mandatory) | The property of the object to use as the title
+valueProperty (mandatory) | The property of the object to use as the value
 
 Usage:
 ```PowerShell
@@ -96,27 +96,19 @@ Get-Service | Select-Object -First 2 | New-FactSet -TitleProperty Name -ValuePro
 ```
 
 #### New-Table
-Description: Creates a table element for an Adaptive Card, dynamically defining columns based on object properties and supports highlighting specific cell values.
+Creates a table element for an Adaptive Card, dynamically defining columns based on object properties and supports highlighting specific cell values.
 
-Parameters:
-
-> _Object_: Input object from the pipeline
- 
-> _HighlightValueMatch_: Text to match for highlighting
- 
-> _HighlightValueStyle_: Style to apply for the highlight (dark, light, accent, good, warning, attention)
- 
-> _firstRowAsHeader_: Boolean to specify if the first row is a header
- 
-> _headerRowStyle_: Style for the header row
- 
-> _showGridLines_: Boolean to show grid lines
- 
-> _gridStyle_: Style for the grid
- 
-> _horizontalCellContentAlignment_: Horizontal alignment for cell content (left, center, right)
-
-> _verticalCellContentAlignment_: Vertical alignment for cell content (top, center, bottom)
+Parameter | Description
+--- | ---
+object (mandatory) | Input object from the pipeline 
+firstRowAsHeader | Boolean to specify if the first row is a header 
+showGridLines | Boolean to show grid lines 
+headerRowStyle | Style for the header row (default, dark, light, accent, good, warning, attention)
+gridStyle | Style for the grid (default, dark, light, accent, good, warning, attention)
+highlightValueMatch | Text to match for highlighting
+highlightValueStyle | Style to apply for the highlight (dark, light, accent, good, warning, attention) 
+horizontalCellContentAlignment | Horizontal alignment for cell content (left, center, right)
+verticalCellContentAlignment | Vertical alignment for cell content (top, center, bottom)
 
 Usage:
 ```PowerShell
