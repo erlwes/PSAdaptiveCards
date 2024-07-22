@@ -113,9 +113,9 @@ Usage:
 Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped" -HighlightValueStyle "attention" -firstRowAsHeader $true -showGridLines $false -gridStyle "accent" -horizontalCellContentAlignment "center" -verticalCellContentAlignment "top"
 ```
 
-## Examples, combined
+## Examples
 
-### Example 1 - Header and a table of services
+### 🔵Example 1 - Header and a table of services
 ```PowerShell
 $Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
 $cardContent = @(
@@ -129,7 +129,7 @@ New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
 * Tabled is created from any PowerShell-object first by adding all noteproperties as headers, then adding all objects as additional rows
 * Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
-### Example 2 - Header and a "Fact set"
+### 🔵Example 2 - Header and a "Fact set"
 ```PowerShell
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Employees'
 $exampleObjects = @(
@@ -143,7 +143,7 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-### Example 3 - Header, sub-headers and lists
+### 🔵Example 3 - Header, sub-headers and lists
 ```PowerShell
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
