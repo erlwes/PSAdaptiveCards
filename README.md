@@ -106,14 +106,27 @@ $cardContent = @(
     New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
     $Services | New-Table -HighlightValueMatch 'Stopped' -HighlightValueStyle 'attention' -headerRowStyle 'accent' -gridStyle 'accent'
 )
-New-AdaptiveCard -BodyContent $cardContent
+New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
 ```
 ![image](https://github.com/user-attachments/assets/974bc543-54f9-4cee-b840-4f0ff5265e3f)
 
 * Tabled is created from any PowerShell-object first by adding all noteproperties as headers, then adding all objects as additional rows
 * Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
-### Example 2 - Header and a "Fact set"
+### Example 2 - Same as above, but make JSON-payload and send to Teams
+```
+$Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
+
+$cardContent = @(
+    New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
+    $Services | New-Table -HighlightValueMatch 'Stopped' -HighlightValueStyle 'attention' -headerRowStyle 'accent' -gridStyle 'accent'
+)
+
+$WebhookURI = 'https://prod-140.westeurope.logic.azure.com:443/workflows/[REDACTED]/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=[REDACTED]'
+New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
+```
+
+### Example 3 - Header and a "Fact set"
 ```
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Employees'
 $exampleObjects = @(
@@ -122,12 +135,12 @@ $exampleObjects = @(
 )
 $Factset = $exampleObjects | New-FactSet -TitleProperty Name -ValueProperty Description
 
-New-AdaptiveCard -BodyContent $Header, $Factset
+New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ```
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-### Example 3 - Header, sub-headers and lists
+### Example 4 - Header, sub-headers and lists
 ```
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
@@ -135,6 +148,6 @@ $TextBlock2 = New-TextBlock -Text '- Item :(\r- Item\r- Item' -Color attention
 $TextBlock3 = New-TextBlock -Size large -Weight bolder -Text 'List 2' -Color good -separator $true
 $TextBlock4 = New-TextBlock -Text '1. Item :)\r2. Item\r3. Item' -Color good 
 
-New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4
+New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | ConvertTo-Json -Depth 20
 ```
 ![image](https://github.com/user-attachments/assets/7dd8cf6c-d1f0-4113-bfa6-a6d35d7e48fd)
