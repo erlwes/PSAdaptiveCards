@@ -7,7 +7,7 @@ To get started with worksflows and generate a webhook URL, look [here](https://s
 
 
 ## Straight to the point - an example
-```
+```PowerShell
 #Use functions to add a header-text and a table to a card.
 $cardContent = @(
     New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
@@ -34,7 +34,7 @@ Parameters:
 >  _BodyContent_: An array of card elements (e.g., text blocks, fact sets) to be included in the body of the card.
 
 Usage:
-```
+```PowerShell
 $cardContent = @(
     New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
     New-TextBlock -Text "Lorem Ipsum Dolar ... "
@@ -46,17 +46,15 @@ New-AdaptiveCard -BodyContent $cardContent
 Description: Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and post it.
 
 Parameters:
-
-> _WebhookURI_: This mandatory parameter specifies the Microsoft Teams webhook URL to which the adaptive card will be sent.
-
-> _adaptiveCard: This mandatory parameter, which can accept pipeline input, specifies the adaptive card content as a PowerShell custom object (pscustomobject).
-
-> _fullWidth: This optional switch parameter specifies whether the adaptive card should be displayed at full width in Teams. If this switch is included, the card's width is set to "Full".
-
-> _onlyConvertToJson: This optional switch parameter specifies whether the function should only convert the adaptive card to JSON and output it, without sending it to the Teams webhook.
+Parameter | Description
+--- | ---
+WebhookURI | This mandatory parameter specifies the Microsoft Teams webhook URL to which the adaptive card will be sent.
+adaptiveCard | This mandatory parameter, which can accept pipeline input, specifies the adaptive card content as a PowerShell custom object (pscustomobject).
+fullWidth | This optional switch parameter specifies whether the adaptive card should be displayed at full width in Teams. If this switch is included, the card's width is set to "Full".
+onlyConvertToJson | This optional switch parameter specifies whether the function should only convert the adaptive card to JSON and output it, without sending it to the Teams webhook.
 
 Usage:
-```
+```PowerShell
 $cardContent = @(
     New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
     New-TextBlock -Text "Lorem Ipsum Dolar ... "
@@ -89,7 +87,7 @@ Parameters:
 > _Text_ (mandatory): The text content.
 
 Usage:
-```
+```PowerShell
 $textBlock = New-TextBlock -Text "This is a text block" -Size "large" -Weight "bolder"
 ```
 
@@ -105,7 +103,7 @@ Parameters:
 > _ValueProperty_ (mandatory): The property of the object to use as the value
 
 Usage:
-```
+```PowerShell
 Get-Service | Select-Object -First 2 | New-FactSet -TitleProperty Name -ValueProperty Status
 ```
 
@@ -133,14 +131,14 @@ Parameters:
 > _verticalCellContentAlignment_: Vertical alignment for cell content (top, center, bottom)
 
 Usage:
-```
+```PowerShell
 Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped" -HighlightValueStyle "attention" -firstRowAsHeader $true -showGridLines $false -gridStyle "accent" -horizontalCellContentAlignment "center" -verticalCellContentAlignment "top"
 ```
 
 ## Examples, combined
 
 #### Example 1 - Header and a table of services
-```
+```PowerShell
 $Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
 $cardContent = @(
     New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
@@ -154,7 +152,7 @@ New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
 * Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
 #### Example 2 - Header and a "Fact set"
-```
+```PowerShell
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Employees'
 $exampleObjects = @(
     [pscustomobject]@{ Name = 'Jon Doe'; Type = 'Male'; Description = 'Works at Contoso' },
@@ -168,7 +166,7 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 
 
 #### Example 3 - Header, sub-headers and lists
-```
+```PowerShell
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
 $TextBlock2 = New-TextBlock -Text '- Item :(\r- Item\r- Item' -Color attention
