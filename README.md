@@ -21,7 +21,29 @@ $cardContent = @(
     New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
     New-TextBlock -Text "Lorem Ipsum Dolar ... "
 )
-$adaptiveCard = New-AdaptiveCard -BodyContent $cardContent
+New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
+```
+
+### Send-JsonToTeamsWebhook
+Description: Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and post it.
+
+Parameters:
+
+> _WebhookURI_: This mandatory parameter specifies the Microsoft Teams webhook URL to which the adaptive card will be sent.
+
+> _adaptiveCard: This mandatory parameter, which can accept pipeline input, specifies the adaptive card content as a PowerShell custom object (pscustomobject).
+
+> _fullWidth: This optional switch parameter specifies whether the adaptive card should be displayed at full width in Teams. If this switch is included, the card's width is set to "Full".
+
+> _onlyConvertToJson: This optional switch parameter specifies whether the function should only convert the adaptive card to JSON and output it, without sending it to the Teams webhook.
+
+Usage:
+```
+$cardContent = @(
+    New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
+    New-TextBlock -Text "Lorem Ipsum Dolar ... "
+)
+New-AdaptiveCard -BodyContent $cardContent
 ```
 
 ### New-TextBlock
