@@ -1,6 +1,4 @@
 # PSAdaptiveCards
-
-## Description:
 The PSAdaptiveCard PowerShell module designed to create JSON-formatted Adaptive Cards. Adaptive Cards are a way to present content in applications such as Microsoft Teams. This module includes functions to construct various elements of an Adaptive Card, and a function for posting these messages to Teams channels using Workflow webhooks.
 
 To get started with worksflows and generate a webhook URL, look [here](https://support.microsoft.com/en-us/office/post-a-workflow-when-a-webhook-request-is-received-in-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498#:~:text=An%20Incoming%20webhook%20lets%20external,a%20webhook%20request%20is%20received.&text=next%20to%20the%20channel%20or,for%2C%20and%20then%20select%20Workflows.).
@@ -26,7 +24,7 @@ This results in the following message to your Teams-channel:
 
 ## Functions:
 
-#### New-AdaptiveCard
+### 🟢New-AdaptiveCard
 Creates the structure for an Adaptive Card.
 
 Parameter | Description
@@ -42,7 +40,7 @@ $cardContent = @(
 New-AdaptiveCard -BodyContent $cardContent
 ```
 
-#### Send-JsonToTeamsWebhook
+### 🟢Send-JsonToTeamsWebhook
 Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and post it.
 
 Parameter | Description
@@ -61,7 +59,7 @@ $cardContent = @(
 New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
 ```
 
-#### New-TextBlock
+### 🟢New-TextBlock
 Creates a text block element for an Adaptive Card.
 
 Parameter | Description
@@ -81,7 +79,7 @@ Usage:
 $textBlock = New-TextBlock -Text "This is a text block" -Size "large" -Weight "bolder"
 ```
 
-#### New-FactSet
+### 🟢New-FactSet
 Creates a fact set element for an Adaptive Card, typically used to present key-value pairs.
 
 Parameter | Description
@@ -95,7 +93,7 @@ Usage:
 Get-Service | Select-Object -First 2 | New-FactSet -TitleProperty Name -ValueProperty Status
 ```
 
-#### New-Table
+### 🟢New-Table
 Creates a table element for an Adaptive Card, dynamically defining columns based on object properties and supports highlighting specific cell values.
 
 Parameter | Description
@@ -117,7 +115,7 @@ Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped"
 
 ## Examples, combined
 
-#### Example 1 - Header and a table of services
+### Example 1 - Header and a table of services
 ```PowerShell
 $Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
 $cardContent = @(
@@ -131,7 +129,7 @@ New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
 * Tabled is created from any PowerShell-object first by adding all noteproperties as headers, then adding all objects as additional rows
 * Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
-#### Example 2 - Header and a "Fact set"
+### Example 2 - Header and a "Fact set"
 ```PowerShell
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Employees'
 $exampleObjects = @(
@@ -145,7 +143,7 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-#### Example 3 - Header, sub-headers and lists
+### Example 3 - Header, sub-headers and lists
 ```PowerShell
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
