@@ -21,7 +21,7 @@ $cardContent = @(
     New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
     New-TextBlock -Text "Lorem Ipsum Dolar ... "
 )
-New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
+New-AdaptiveCard -BodyContent $cardContent
 ```
 
 ### Send-JsonToTeamsWebhook
@@ -43,7 +43,7 @@ $cardContent = @(
     New-TextBlock -Text "Hello, Teams!" -weight 'bolder' -size large
     New-TextBlock -Text "Lorem Ipsum Dolar ... "
 )
-New-AdaptiveCard -BodyContent $cardContent
+New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
 ```
 
 ### New-TextBlock
