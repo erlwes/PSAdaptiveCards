@@ -8,6 +8,20 @@ To get started with worksflows and generate a webhook URL, look [here](https://s
 
 TLDR; -> [Examples](https://github.com/erlwes/PSAdaptiveCards/tree/main?tab=readme-ov-file#examples-combined)
 
+## Straight to the point - an example
+```
+#Use functions to add a header text, and convert a PowerShell-Object into a table
+$cardContent = @(
+    New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
+    Get-Service | Select-Object Name, DisplayName, Status -First 5| New-Table -HighlightValueMatch 'Stopped' -HighlightValueStyle 'attention' -headerRowStyle 'accent' -gridStyle 'accent'
+)
+#Wrap the elements inside an Adaptive Card, then wrap the card as an attachment inside a message, convert it to JSON and POST it to webhook URL:
+$WebhookURI = 'https://prod-140.westeurope.logic.azure.com:443/workflows/[REDACTED]/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=[REDACTED]'
+New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
+```
+This results in the following message to your Teams-channel:
+![image](https://github.com/user-attachments/assets/8ceb598e-2621-4523-bb1c-f674de02a2dc)
+
 ## Functions:
 
 ### New-AdaptiveCard
@@ -137,22 +151,7 @@ New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
 * Tabled is created from any PowerShell-object first by adding all noteproperties as headers, then adding all objects as additional rows
 * Highlighting of matching values of text in textblocks inside of table cells is supported with a parameter set, as illustrated above
 
-### Example 2 - Same as above, but make JSON-payload and send to Teams
-```
-$Services = Get-Service | Select-Object Name, DisplayName, Status -First 5
-
-$cardContent = @(
-    New-TextBlock -Size extraLarge -Weight bolder -Text 'Services'
-    $Services | New-Table -HighlightValueMatch 'Stopped' -HighlightValueStyle 'attention' -headerRowStyle 'accent' -gridStyle 'accent'
-)
-
-$WebhookURI = 'https://prod-140.westeurope.logic.azure.com:443/workflows/[REDACTED]/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=[REDACTED]'
-New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
-```
-![image](https://github.com/user-attachments/assets/8ceb598e-2621-4523-bb1c-f674de02a2dc)
-
-
-### Example 3 - Header and a "Fact set"
+### Example 2 - Header and a "Fact set"
 ```
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Employees'
 $exampleObjects = @(
@@ -166,7 +165,7 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-### Example 4 - Header, sub-headers and lists
+### Example 3 - Header, sub-headers and lists
 ```
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
