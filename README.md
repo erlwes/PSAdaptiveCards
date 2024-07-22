@@ -147,6 +147,8 @@ $cardContent = @(
 $WebhookURI = 'https://prod-140.westeurope.logic.azure.com:443/workflows/[REDACTED]/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=[REDACTED]'
 New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI -fullWidth
 ```
+![image](https://github.com/user-attachments/assets/8ceb598e-2621-4523-bb1c-f674de02a2dc)
+
 
 ### Example 3 - Header and a "Fact set"
 ```
