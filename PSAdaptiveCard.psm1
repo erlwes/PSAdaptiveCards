@@ -26,7 +26,8 @@
     $cardContent = @(
         New-TextBlock -Text "Hello, Teams!"
     )
-    $JSONPayload = New-AdaptiveCard -BodyContent $cardContent
+    New-AdaptiveCard -BodyContent $cardContent | ConvertTo-Json -Depth 20
+    
 #>
 
 function New-AdaptiveCard {
@@ -39,19 +40,13 @@ function New-AdaptiveCard {
         type = 'AdaptiveCard'
         body = @()
         '$schema' = 'http://adaptivecards.io/schemas/adaptive-card.json'
-        version = '1.6'
-        msteams = @{
-            width = 'Full'
-        }
+        version = '1.4'        
     }
 
     foreach ($item in $BodyContent) {
         $adaptiveCard.body += $item
-    }
-    
-    $json = ($adaptiveCard | ConvertTo-Json -Depth 10) -replace '\\\\', '\'
-    
-    return $json
+    }    
+    return $adaptiveCard
 }
 
 function New-TextBlock {
@@ -120,7 +115,6 @@ function New-FactSet {
         return $factSet
     }    
 }
-
 function New-Table {
     [CmdletBinding(DefaultParameterSetName = 'Default')]
     param (
@@ -249,10 +243,59 @@ function New-Table {
         return $table
     }
 }
+function Send-JsonToTeamsWebhook {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$WebhookURI,
+        [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
+        [pscustomobject]$adaptiveCard,
+        [Parameter(Mandatory = $false)]
+        [switch]$fullWidth,
+        [Parameter(Mandatory = $false)]
+        [switch]$onlyConvertToJson
+    )
+    begin {
+        #
+    }
+    process {
+        $attachment = [pscustomobject]@{
+            contentType = "application/vnd.microsoft.card.adaptive"
+            contentUrl = $null
+            content = $adaptiveCard
+        }
 
-#INSTALL MODULE:
-#$modulePath = ($env:PSModulePath -split ';' | Select-Object -First 1)
-#New-Item -Type Directory -Path "$modulePath\PSAdaptiveCard"
-#New-Item -Type File -Path "$modulePath\PSAdaptiveCard\PSAdaptiveCard.psm1"
-#Copy content of this script to '...PSAdaptiveCard.psm1' and save
-#Import-Module PSAdaptiveCard
+        $message = [pscustomobject]@{
+            type = "message"
+            attachments = @()
+        }
+        $message.attachments += $attachment
+
+        if ($fullWidth) {
+            $msteamsProperty = @{
+                width = "Full"
+            }
+            $message.attachments[0].content | Add-Member -MemberType NoteProperty -Name msteams -Value $msteamsProperty
+        }
+
+        $Json = ($message | ConvertTo-Json -Depth 20) -replace '\\\\', '\'
+        
+        if ($OnlyConvertToJson) {
+            Write-Output $Json
+            Break
+        }
+
+        $parameters = @{
+            "URI"         = $WebhookURI
+            "Method"      = 'POST'
+            "Body"        = $Json
+            "ContentType" = 'application/json; charset=UTF-8'
+            "ErrorAction" = 'Stop'
+        }
+        try {
+            Invoke-RestMethod @parameters            
+        }
+        catch {
+            Write-Error "Failed to send request: $($_.Exception.Message)"
+        }
+    }
+}
