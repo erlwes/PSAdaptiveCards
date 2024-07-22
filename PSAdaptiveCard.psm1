@@ -115,6 +115,7 @@ function New-FactSet {
         return $factSet
     }    
 }
+
 function New-Table {
     [CmdletBinding(DefaultParameterSetName = 'Default')]
     param (
@@ -243,6 +244,7 @@ function New-Table {
         return $table
     }
 }
+
 function Send-JsonToTeamsWebhook {
     param (
         [Parameter(Mandatory = $true)]
