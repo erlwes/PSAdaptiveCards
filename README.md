@@ -1,12 +1,10 @@
 # PSAdaptiveCards
 
-
 ## Description:
 The PSAdaptiveCard PowerShell module designed to create JSON-formatted Adaptive Cards. Adaptive Cards are a way to present content in applications such as Microsoft Teams. This module includes functions to construct various elements of an Adaptive Card, and a function for posting these messages to Teams channels using Workflow webhooks.
 
 To get started with worksflows and generate a webhook URL, look [here](https://support.microsoft.com/en-us/office/post-a-workflow-when-a-webhook-request-is-received-in-microsoft-teams-8ae491c7-0394-4861-ba59-055e33f75498#:~:text=An%20Incoming%20webhook%20lets%20external,a%20webhook%20request%20is%20received.&text=next%20to%20the%20channel%20or,for%2C%20and%20then%20select%20Workflows.).
 
-TLDR; -> [Examples](https://github.com/erlwes/PSAdaptiveCards/tree/main?tab=readme-ov-file#examples-combined)
 
 ## Straight to the point - an example
 ```
@@ -23,7 +21,9 @@ This results in the following message to your Teams-channel:
 ![image](https://github.com/user-attachments/assets/8ceb598e-2621-4523-bb1c-f674de02a2dc)
 Notice that then function supports highlighting cells matching a text of choosing ("stopped" is highlighted using style "attention")
 
+
 ## Functions:
+
 
 ### New-AdaptiveCard
 Description: Creates the structure for an Adaptive Card.
