@@ -43,15 +43,14 @@ New-AdaptiveCard -BodyContent $cardContent
 ```
 
 #### Send-JsonToTeamsWebhook
-Description: Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and post it.
+Convert AdaptiveCards to JSON-payload for MS Teams Workflow-based webhook and post it.
 
-Parameters:
 Parameter | Description
 --- | ---
-WebhookURI | This mandatory parameter specifies the Microsoft Teams webhook URL to which the adaptive card will be sent.
-adaptiveCard | This mandatory parameter, which can accept pipeline input, specifies the adaptive card content as a PowerShell custom object (pscustomobject).
-fullWidth | This optional switch parameter specifies whether the adaptive card should be displayed at full width in Teams. If this switch is included, the card's width is set to "Full".
-onlyConvertToJson | This optional switch parameter specifies whether the function should only convert the adaptive card to JSON and output it, without sending it to the Teams webhook.
+WebhookURI (mandatory) | Specifies the Microsoft Teams webhook URL to which the adaptive card will be sent
+adaptiveCard (mandatory) | Accept pipeline input, specifies the adaptive card content as a PowerShell custom object (pscustomobject)
+fullWidth | This switch parameter specifies whether the adaptive card should be displayed at full width in Teams. If this switch is included, the card's width is set to "Full"
+onlyConvertToJson | This switch parameter specifies whether the function should only convert the adaptive card to JSON and output it, without sending it to the Teams webhook
 
 Usage:
 ```PowerShell
@@ -63,28 +62,19 @@ New-AdaptiveCard -BodyContent $cardContent | Send-JsonToTeamsWebhook -WebhookURI
 ```
 
 #### New-TextBlock
-Description: Creates a text block element for an Adaptive Card.
+Creates a text block element for an Adaptive Card.
 
-Parameters:
-> _IsSubtle_: Boolean indicating if the text should be subtle
-
-> _separator_: Boolean indicating if there should be a separator line
-
-> _MaxLines_: Maximum number of lines to display
-
-> _Size_: Size of the text (default, small, medium, large, extraLarge).
-
-> _Weight_: Weight of the text (default, lighter, bolder).
-
-> _Wrap_: Boolean indicating if the text should wrap.
-
-> _Color_: Color of the text (default, dark, light, accent, good, warning, attention).
-
-> _Fonttype_: Font type of the text (default, monospace).
-
-> _HorizontalAlignment_: Horizontal alignment of the text (left, center, right).
-
-> _Text_ (mandatory): The text content.
+Parameter | Description
+--- | ---
+Text (mandatory) | The text content
+Size | Size of the text (default, small, medium, large, extraLarge)
+Weight | Weight of the text (default, lighter, bolder)
+Color | Color of the text (default, dark, light, accent, good, warning, attention)
+Wrap | Boolean indicating if the text should wrap
+MaxLines | Maximum number of lines to display
+IsSubtle | Boolean indicating if the text should be subtle
+separator | Boolean indicating if there should be a separator line
+HorizontalAlignment | Horizontal alignment of the text (left, center, right)
 
 Usage:
 ```PowerShell
@@ -92,15 +82,13 @@ $textBlock = New-TextBlock -Text "This is a text block" -Size "large" -Weight "b
 ```
 
 #### New-FactSet
-Description: Creates a fact set element for an Adaptive Card, typically used to present key-value pairs.
+Creates a fact set element for an Adaptive Card, typically used to present key-value pairs.
 
-Parameters:
-
-> _Object_: Input object from the pipeline
-
-> _TitleProperty_ (mandatory): The property of the object to use as the title
-
-> _ValueProperty_ (mandatory): The property of the object to use as the value
+Parameter | Description
+--- | ---
+Object (mandatory) | Input object from the pipeline
+TitleProperty (mandatory) | The property of the object to use as the title
+ValueProperty (mandatory) | The property of the object to use as the value
 
 Usage:
 ```PowerShell
