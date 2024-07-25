@@ -110,7 +110,7 @@ verticalCellContentAlignment | Vertical alignment for cell content `(top, center
 
 Usage:
 ```PowerShell
-Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped" -HighlightValueStyle "attention" -firstRowAsHeader $true -showGridLines $false -gridStyle "accent" -horizontalCellContentAlignment "center" -verticalCellContentAlignment "top"
+Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped" -HighlightValueStyle "attention"
 ```
 
 ## Examples
