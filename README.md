@@ -154,3 +154,7 @@ $TextBlock4 = New-TextBlock -Text '1. Item :)\r2. Item\r3. Item' -Color good
 New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | ConvertTo-Json -Depth 20
 ```
 ![image](https://github.com/user-attachments/assets/7dd8cf6c-d1f0-4113-bfa6-a6d35d7e48fd)
+
+
+## Install
+`Install-Module -Name PSAdaptiveCard`
