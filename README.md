@@ -68,10 +68,11 @@ text (mandatory) | The text content `(string)`
 size | Size of the text `(default, small, medium, large, extraLarge)`
 weight | Weight of the text `(default, lighter, bolder)`
 color | Color of the text `(default, dark, light, accent, good, warning, attention)`
-wrap | Indicating if the text should wrap `(true, false)`
-maxLines | Maximum number of lines to display `(int)`
-isSubtle | If the text should be subtle `(true, false)`
-separator | If there should be a separator line above element `(true, false)`
+wrap | If true, allow text to wrap. Otherwise, text is clipped `(true, false)`
+maxLines | Specifies the maximum number of lines to display. `(int)`
+isSubtle | If true, displays text slightly toned down to appear less prominent `(true, false)`
+separator | When true, draw a separating line at the top of the element `(true, false)`
+spacing | Controls the amount of spacing between this element and the preceding element `(default, none, small, medium, large, extraLarge, padding)`
 horizontalAlignment | Horizontal alignment of the text `(left, center, right)`
 
 Usage:
@@ -113,6 +114,27 @@ Usage:
 Get-Service | Select-Object -First 10 | New-Table -HighlightValueMatch "Stopped" -HighlightValueStyle "attention"
 ```
 
+### 🟢New-Image
+Creates an image-element for an Adaptive Card. Acceptable formats are PNG, JPEG, and GIF.
+
+Parameter | Description
+--- | ---
+url (mandatory) | The URL to the image `(uri)`
+altText | Alternate text describing the image `(string)`
+backgroundColor | Applies a background to a transparent image. This property will respect the image style `(string)`
+height | The desired height of the image. This overrides the `size` property`
+horizontalAlignment | Controls how this element is horizontally positioned within its parent `(left, center, right)`
+size | Controls the approximate size of the image `(auto, stretch, small, medium, large)`
+style | Controls how this image is displayed `(default, person)`
+width | The desired on-screen width of the image, ending in ‘px’. E.g., 50px. This overrides the size property
+separator | When true, draw a separating line at the top of the element `(true, false)`
+spacing | Controls the amount of spacing between this element and the preceding element `(default, none, small, medium, large, extraLarge, padding)`
+
+Usage:
+```PowerShell
+New-Image -url "https://adaptivecards.io/content/cats/1.png" -size large -altText 'Cool cat'
+```
+
 ## Examples
 
 ### 🔵Example 1 - Header and a table of services
@@ -143,13 +165,13 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-### 🔵Example 3 - Header, sub-headers and lists
+### 🔵Example 3 - Header, sub-headers, lists and emoji's
 ```PowerShell
-$Header = New-TextBlock -Size extraLarge -Weight bolder -Text 'Good or bad'
-$TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color attention -separator $true
-$TextBlock2 = New-TextBlock -Text '- Item :(\r- Item\r- Item' -Color attention
-$TextBlock3 = New-TextBlock -Size large -Weight bolder -Text 'List 2' -Color good -separator $true
-$TextBlock4 = New-TextBlock -Text '1. Item :)\r2. Item\r3. Item' -Color good 
+$Header = New-TextBlock -Size extraLarge -Weight bolder -Text '😇 or 👿'
+$TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color good -separator $true
+$TextBlock2 = New-TextBlock -Text '- Item :)\r- Item\r- Item' -Color good
+$TextBlock3 = New-TextBlock -Size large -Weight bolder -Text 'List 2' -Color attention -separator $true
+$TextBlock4 = New-TextBlock -Text '1. Item :(\r2. Item\r3. Item' -Color attention 
 
 New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | ConvertTo-Json -Depth 20
 ```
