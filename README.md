@@ -165,15 +165,17 @@ New-AdaptiveCard -BodyContent $Header, $Factset | ConvertTo-Json -Depth 20
 ![image](https://github.com/user-attachments/assets/3597efea-246f-4bd4-820b-5dd1c10d34b3)
 
 
-### 🔵Example 3 - Header, sub-headers, lists and emoji's
+### 🔵Example 3 - Header, sub-headers, lists and emoji's to Teams
 ```PowerShell
+$WebhookURI = '[your webhook uri]'
+
 $Header = New-TextBlock -Size extraLarge -Weight bolder -Text '😇 or 👿'
 $TextBlock1 = New-TextBlock -Size large -Weight bolder -Text 'List 1' -Color good -separator $true
 $TextBlock2 = New-TextBlock -Text '- Item :)\r- Item\r- Item' -Color good
 $TextBlock3 = New-TextBlock -Size large -Weight bolder -Text 'List 2' -Color attention -separator $true
 $TextBlock4 = New-TextBlock -Text '1. Item :(\r2. Item\r3. Item' -Color attention 
 
-New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | ConvertTo-Json -Depth 20
+New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI
 ```
 ![image](https://github.com/user-attachments/assets/f75e6444-a70b-450f-84a4-75a5d9abcde7)
 
