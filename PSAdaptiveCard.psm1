@@ -3,7 +3,7 @@
     Module for creating and managing Adaptive Cards for Microsoft Teams.
 
 .DESCRIPTION
-    This module provides functions to generate JSON payloads for Adaptive Cards, Fact Sets, and Tables.
+    This module provides functions to generate JSON payloads for Adaptive Cards, Fact Sets, and Tables and more.
     These payloads can be used to post messages to Microsoft Teams channels via Workflow webhooks.
 
 .AUTHOR
@@ -16,7 +16,7 @@
     MIT
 
 .VERSION
-    1.0.0
+    0.0.3
 
 .NOTES
     - Requires PowerShell 5.1 or later.
@@ -50,66 +50,88 @@ function New-AdaptiveCard {
 }
 
 function New-TextBlock {
-    param (        
-        [bool]$IsSubtle = $false,
-        [bool]$separator = $false,        
-        [int]$MaxLines,
-        [ValidateSet('default', 'small', 'medium', 'large', 'extraLarge', IgnoreCase = $false)]
-        [string]$Size = 'default',
-        [ValidateSet('default', 'lighter', 'bolder', IgnoreCase = $false)]
-        [string]$Weight = 'default',
-        [bool]$Wrap = $true,
-        [ValidateSet('default', 'dark', 'light', 'accent', 'good', 'warning', 'attention', IgnoreCase = $false)]
-        [string]$Color = 'default',
-        [ValidateSet('default', 'monospace', IgnoreCase = $false)]
-        [string]$Fonttype = 'default',
-        [ValidateSet('left', 'center', 'right', IgnoreCase = $false)]
-        [string]$HorizontalAlignment = 'left',
-        [Parameter(Mandatory = $true)]
-        [string]$Text
-    )
+    param (
+        [Parameter(Mandatory = $false)] 
+        [bool]$isSubtle,
 
-    $textBlock = [pscustomobject]@{
-        type                = 'TextBlock'
-        isSubtle            = $IsSubtle
-        separator           = $separator
-        maxLines            = $MaxLines
-        size                = ($size.ToLower())
-        weight              = ($Weight.ToLower())
-        wrap                = $Wrap
-        color               = $Color
-        fonttype            = $Fonttype
-        horizontalAlignment = $HorizontalAlignment
-        text                = $Text
+        [Parameter(Mandatory = $false)]
+        [bool]$separator,
+        
+        [Parameter(Mandatory = $false)]
+        [int]$maxLines,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'small', 'medium', 'large', 'extraLarge', IgnoreCase = $false)]
+        [string]$size,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'lighter', 'bolder', IgnoreCase = $false)]
+        [string]$weight,
+
+        [Parameter(Mandatory = $false)]
+        [bool]$wrap,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'dark', 'light', 'accent', 'good', 'warning', 'attention', IgnoreCase = $false)]
+        [string]$color,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'monospace', IgnoreCase = $false)]
+        [string]$fontType,
+
+        [Parameter(Mandatory = $false)][ValidateSet('left', 'center', 'right', IgnoreCase = $false)]
+        [string]$horizontalAlignment,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'none', 'small', 'medium', 'large', 'extraLarge', 'padding', IgnoreCase = $false)]
+        [string]$spacing,
+
+        [Parameter(Mandatory = $true)]
+        [string]$text
+    )
+    begin {
+        $textBlock = [pscustomobject]@{
+            type                = 'TextBlock'
+            text                = $text
+        }
     }
-    return $textBlock
+    process {
+        if ($isSubtle)              { $textBlock | Add-Member -NotePropertyName 'isSubtle' -NotePropertyValue $isSubtle }
+        if ($separator)             { $textBlock | Add-Member -NotePropertyName 'separator' -NotePropertyValue $separator }
+        if ($maxLines)              { $textBlock | Add-Member -NotePropertyName 'maxLines' -NotePropertyValue $maxLines }
+        if ($size)                  { $textBlock | Add-Member -NotePropertyName 'size' -NotePropertyValue $size }
+        if ($weight)                { $textBlock | Add-Member -NotePropertyName 'weight' -NotePropertyValue $weight }
+        if ($wrap)                  { $textBlock | Add-Member -NotePropertyName 'wrap' -NotePropertyValue $wrap }
+        if ($color)                 { $textBlock | Add-Member -NotePropertyName 'color' -NotePropertyValue $color }
+        if ($fonttype)              { $textBlock | Add-Member -NotePropertyName 'fonttype' -NotePropertyValue $fonttype }
+        if ($horizontalAlignment)   { $textBlock | Add-Member -NotePropertyName 'horizontalAlignment' -NotePropertyValue $horizontalAlignment }
+        if ($spacing)               { $textBlock | Add-Member -NotePropertyName 'spacing' -NotePropertyValue $spacing }
+    }
+    end {
+        return $textBlock
+    }
 }
 
 function New-FactSet {
     param (
-        [Parameter(ValueFromPipeline = $true)]
-        [psobject]$Object,
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [psobject]$object,
+
         [Parameter(Mandatory = $true)]
-        [string]$TitleProperty,
+        [string]$titleProperty,
+
         [Parameter(Mandatory = $true)]
-        [string]$ValueProperty
-    )
-    
+        [string]$valueProperty
+    )    
     begin {
         $facts = @()
-    }
-    
+    }    
     process {
-        $value = [string]$Object.$ValueProperty
+        $value = [string]$object.$valueProperty
         $fact = @{
-            title = $Object.$TitleProperty
+            title = $object.$titleProperty
             value = $value
         }
         $facts += $fact
     }
     end {
         $factSet = @{
-            type  = "FactSet"
+            type  = 'FactSet'
             facts = $facts
         }
         return $factSet
@@ -117,50 +139,42 @@ function New-FactSet {
 }
 
 function New-Table {
-    [CmdletBinding(DefaultParameterSetName = 'Default')]
-    param (
-        [Parameter(ValueFromPipeline = $true, ParameterSetName = 'Default')]
-        [Parameter(ValueFromPipeline = $true, ParameterSetName = 'Highlight')]
-        [psobject]$Object,
+    param (        
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
+        [psobject]$object,
 
         [Parameter(Mandatory = $false, ParameterSetName = 'Highlight')]
-        [string]$HighlightValueMatch,
+        [string]$highlightValueMatch,
 
-        [Parameter(Mandatory = $false, ParameterSetName = 'Highlight')]
-        [ValidateSet('dark', 'light', 'accent', 'good', 'warning', 'attention')]
-        [string]$HighlightValueStyle,
+        [Parameter(Mandatory = $false, ParameterSetName = 'Highlight')][ValidateSet('dark', 'light', 'accent', 'good', 'warning', 'attention', IgnoreCase = $false)]
+        [string]$highlightValueStyle,
 
         [Parameter(Mandatory = $false)]
         [bool]$firstRowAsHeader = $true,
 
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('default', 'dark', 'light', 'accent', 'good', 'warning', 'attention')]
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'dark', 'light', 'accent', 'good', 'warning', 'attention', IgnoreCase = $false)]
         [string]$headerRowStyle,
         
         [Parameter(Mandatory = $false)]
         [bool]$showGridLines = $true,
 
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('default', 'dark', 'light', 'accent', 'good', 'warning', 'attention')]
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'dark', 'light', 'accent', 'good', 'warning', 'attention', IgnoreCase = $false)]
         [string]$gridStyle = 'default',
 
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('left', 'center', 'right')]
+        [Parameter(Mandatory = $false)][ValidateSet('left', 'center', 'right', IgnoreCase = $false)]
         [string]$horizontalCellContentAlignment,
 
-        [Parameter(Mandatory = $false)]
-        [ValidateSet('top', 'center', 'bottom')]
+        [Parameter(Mandatory = $false)][ValidateSet('top', 'center', 'bottom', IgnoreCase = $false)]
         [string]$verticalCellContentAlignment
     )
-
     begin {        
         $table = [pscustomobject]@{
-            type                          = 'Table'
-            gridStyle                     = $gridStyle
-            firstRowAsHeader              = $firstRowAsHeader
-            showGridLines                 = $showGridLines
-            columns                       = @()
-            rows                          = @()
+            type                = 'Table'
+            gridStyle           = $gridStyle
+            firstRowAsHeader    = $firstRowAsHeader
+            showGridLines       = $showGridLines
+            columns             = @()
+            rows                = @()
         }
 
         # Add optional attributes if provided
@@ -172,15 +186,15 @@ function New-Table {
         }
 
         $columns = @()        
-        $isHighlighting = $HighlightValueMatch -and $HighlightValueStyle
+        $isHighlighting = $highlightValueMatch -and $highlightValueStyle
     }
-
     process {
         if ($columns.Count -eq 0) {
-            # Get the columns from the first object
+
+            # Get the noteproperties from the first object
             $columns = $Object.PSObject.Properties | Where-Object { $_.MemberType -eq 'NoteProperty' } | Select-Object -ExpandProperty Name
 
-            # Initialize the columns with equal width
+            # Add correct number of columns (one per property)
             foreach ($column in $columns) {
                 $table.columns += @{
                     width = 'auto'
@@ -198,14 +212,14 @@ function New-Table {
                 $headerRow.style = $headerRowStyle
             }
         
-
+            # Add the header row
             foreach ($column in $columns) {
                 $headerRow.cells += @{
                     type  = 'TableCell'
                     items = @(
                         @{
                             type = 'TextBlock'
-                            text = $column
+                            text = $column # Noteproperty names
                         }
                     )
                 }
@@ -227,8 +241,8 @@ function New-Table {
                 text = $textValue
             }
 
-            if ($isHighlighting -and $textValue -eq $HighlightValueMatch) {
-                $textBlock.color = $HighlightValueStyle
+            if ($isHighlighting -and $textValue -match $highlightValueMatch) {
+                $textBlock.color = $highlightValueStyle
             }
 
             $row.cells += @{
@@ -239,65 +253,117 @@ function New-Table {
 
         $table.rows += $row
     }
-
     end {        
         return $table
+    }
+}
+
+function New-Image {
+    param (
+        [Parameter(Mandatory = $true)]
+        [string]$url,
+
+        [Parameter(Mandatory = $false)]
+        [string]$altText = 'image', #Yes, this is mandatory in spec, but getting errors from not providing alt-texts is not amusing, let's be honest.
+
+        [Parameter(Mandatory = $false)]
+        [string]$backgroundColor,
+
+        [Parameter(Mandatory = $false)][ValidateScript({$_ -ceq 'auto' -or $_ -ceq 'stretch' -or $_ -match "^\d+px$"}, ErrorMessage = "Height must be either lowercase 'auto', 'stretch', or a number followed by 'px'.")]
+        [string]$height = "auto",
+
+        [Parameter(Mandatory = $false)][ValidateSet('left', 'center', 'right', IgnoreCase = $false)]
+        [string]$horizontalAlignment,
+
+        [Parameter(Mandatory = $false)][ValidateSet('auto', 'stretch', 'small', 'medium', 'large', IgnoreCase = $false)]
+        [string]$size,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'person', IgnoreCase = $false)]
+        [string]$style,
+
+        [Parameter(Mandatory = $false)][ValidatePattern("^\d+(px)?$", ErrorMessage = "Width must be an integer, optionally followed by 'px' to specify this unit.")]
+        [string]$width,
+
+        [Parameter(Mandatory = $false)][ValidateSet('default', 'none', 'small', 'medium', 'large', 'extraLarge', 'padding', IgnoreCase = $false)]
+        [string]$spacing = 'default',
+
+        [Parameter(Mandatory = $false)]
+        [bool]$separator
+    )
+    begin {
+        $imageObject = [PSCustomObject]@{
+            type = 'Image'
+            url  = $url
+            altText  = $altText
+        }
+    }
+    process {
+        if ($backgroundColor)       { $imageObject | Add-Member -NotePropertyName 'backgroundColor' -NotePropertyValue $vackgroundColor }
+        if ($height -ne 'auto')     { $imageObject | Add-Member -NotePropertyName 'height' -NotePropertyValue $height }
+        if ($horizontalAlignment)   { $imageObject | Add-Member -NotePropertyName 'horizontalAlignment' -NotePropertyValue $horizontalAlignment }    
+        if ($size)                  { $imageObject | Add-Member -NotePropertyName 'size' -NotePropertyValue $size }
+        if ($style)                 { $imageObject | Add-Member -NotePropertyName 'style' -NotePropertyValue $style }
+        if ($width)                 { $imageObject | Add-Member -NotePropertyName 'width' -NotePropertyValue $width }
+        if ($spacing -ne 'default') { $imageObject | Add-Member -NotePropertyName 'spacing' -NotePropertyValue $spacing }
+        if ($separator)             { $imageObject | Add-Member -NotePropertyName 'separator' -NotePropertyValue $separator }
+    }
+    end {
+        return $imageObject
     }
 }
 
 function Send-JsonToTeamsWebhook {
     param (
         [Parameter(Mandatory = $true)]
-        [string]$WebhookURI,
+        [string]$webhookURI,
+
         [Parameter(ValueFromPipeline = $true, Mandatory = $true)]
         [pscustomobject]$adaptiveCard,
+
         [Parameter(Mandatory = $false)]
         [switch]$fullWidth,
+
         [Parameter(Mandatory = $false)]
         [switch]$onlyConvertToJson
     )
-    begin {
-        #
+
+    $attachment = [pscustomobject]@{
+        contentType = 'application/vnd.microsoft.card.adaptive'
+        contentUrl = $null
+        content = $adaptiveCard
     }
-    process {
-        $attachment = [pscustomobject]@{
-            contentType = "application/vnd.microsoft.card.adaptive"
-            contentUrl = $null
-            content = $adaptiveCard
-        }
 
-        $message = [pscustomobject]@{
-            type = "message"
-            attachments = @()
-        }
-        $message.attachments += $attachment
+    $message = [pscustomobject]@{
+        type = 'message'
+        attachments = @()
+    }
+    $message.attachments += $attachment
 
-        if ($fullWidth) {
-            $msteamsProperty = @{
-                width = "Full"
-            }
-            $message.attachments[0].content | Add-Member -MemberType NoteProperty -Name msteams -Value $msteamsProperty
+    if ($fullWidth) {
+        $msteamsProperty = @{
+            width = 'Full'
         }
+        $message.attachments[0].content | Add-Member -MemberType NoteProperty -Name msteams -Value $msteamsProperty
+    }
 
-        $Json = ($message | ConvertTo-Json -Depth 20) -replace '\\\\', '\'
-        
-        if ($OnlyConvertToJson) {
-            Write-Output $Json
-            Break
-        }
+    $json = ($message | ConvertTo-Json -Depth 20) -replace '\\\\', '\' -replace "\\", '&#92;'
+    
+    if ($onlyConvertToJson) {
+        Write-Output $json
+        Break
+    }
 
-        $parameters = @{
-            "URI"         = $WebhookURI
-            "Method"      = 'POST'
-            "Body"        = $Json
-            "ContentType" = 'application/json; charset=UTF-8'
-            "ErrorAction" = 'Stop'
-        }
-        try {
-            Invoke-RestMethod @parameters            
-        }
-        catch {
-            Write-Error "Failed to send request: $($_.Exception.Message)"
-        }
+    $parameters = @{
+        "URI"         = $webhookURI
+        "Method"      = 'POST'
+        "Body"        = $json
+        "ContentType" = 'application/json; charset=UTF-8'
+        "ErrorAction" = 'Stop'
+    }
+    try {
+        Invoke-RestMethod @parameters
+    }
+    catch {
+        Write-Error "Failed to send request: $($_.Exception.Message)"
     }
 }
