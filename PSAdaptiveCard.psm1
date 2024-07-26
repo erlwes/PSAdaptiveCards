@@ -346,7 +346,7 @@ function Send-JsonToTeamsWebhook {
         $message.attachments[0].content | Add-Member -MemberType NoteProperty -Name msteams -Value $msteamsProperty
     }
 
-    $json = ($message | ConvertTo-Json -Depth 20) -replace '\\\\', '\' -replace "\\", '&#92;'
+    $json = ($message | ConvertTo-Json -Depth 20) -replace '\\\\', '\' #-replace "\\", '&#92;'
     
     if ($onlyConvertToJson) {
         Write-Output $json
