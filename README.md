@@ -175,7 +175,7 @@ $TextBlock4 = New-TextBlock -Text '1. Item :(\r2. Item\r3. Item' -Color attentio
 
 New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | ConvertTo-Json -Depth 20
 ```
-![image](https://github.com/user-attachments/assets/7dd8cf6c-d1f0-4113-bfa6-a6d35d7e48fd)
+![image](https://github.com/user-attachments/assets/f75e6444-a70b-450f-84a4-75a5d9abcde7)
 
 
 ## Install
