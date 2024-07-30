@@ -24,10 +24,7 @@ GUID = 'b2433a73-a377-4b53-aa42-2181a7cf6543'
 Author = 'EW'
 
 # Company or vendor of this module
-CompanyName = 'Unknown'
-
-# Copyright statement for this module
-Copyright = '(c) EW. All rights reserved.'
+CompanyName = '-'
 
 # Description of the functionality provided by this module
 Description = 'A module to create Adaptive Cards in JSON format from PowerShell-objects'
