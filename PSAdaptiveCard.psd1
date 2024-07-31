@@ -12,7 +12,7 @@
 RootModule = 'PSAdaptiveCard.psm1'
 
 # Version number of this module.
-ModuleVersion = '0.0.4'
+ModuleVersion = '0.0.5'
 
 # Supported PSEditions
 # CompatiblePSEditions = @()
@@ -25,6 +25,9 @@ Author = 'EW'
 
 # Company or vendor of this module
 CompanyName = '-'
+
+# Copyright statement for this module
+#Copyright = '(c) EW. All rights reserved.'
 
 # Description of the functionality provided by this module
 Description = 'A module to create Adaptive Cards in JSON format from PowerShell-objects'
@@ -92,13 +95,24 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        # Tags = @()
+        Tags = @(
+            'Teams'
+            'MSTeams'
+            'AdaptiveCards'
+            'AdaptiveCard'
+            'Adaptive-Card'
+            'Web-hook'
+            'Webhook'
+            'Workflow'
+            'Message'
+            'JSON'
+        )
 
         # A URL to the license for this module.
         # LicenseUri = ''
 
         # A URL to the main website for this project.
-        # ProjectUri = ''
+        ProjectUri = 'https://github.com/erlwes/PSAdaptiveCards'
 
         # A URL to an icon representing this module.
         # IconUri = ''
