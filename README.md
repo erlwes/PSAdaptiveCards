@@ -22,6 +22,10 @@ This results in the following message to your Teams-channel:
 ![image](https://github.com/user-attachments/assets/8ceb598e-2621-4523-bb1c-f674de02a2dc)
 
 
+## Install
+`Install-Module -Name PSAdaptiveCard`
+
+
 ## Functions:
 
 ### 🟢New-AdaptiveCard
@@ -178,7 +182,3 @@ $TextBlock4 = New-TextBlock -Text '1. Item :(\r2. Item\r3. Item' -Color attentio
 New-AdaptiveCard -BodyContent $Header, $TextBlock1, $TextBlock2, $TextBlock3, $TextBlock4 | Send-JsonToTeamsWebhook -WebhookURI $WebhookURI
 ```
 ![image](https://github.com/user-attachments/assets/f75e6444-a70b-450f-84a4-75a5d9abcde7)
-
-
-## Install
-`Install-Module -Name PSAdaptiveCard`
