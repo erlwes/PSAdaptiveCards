@@ -16,7 +16,7 @@
     MIT
 
 .VERSION
-    0.0.4
+    0.0.6
 
 .NOTES
     - Requires PowerShell 5.1 or later.
@@ -197,7 +197,7 @@ function New-Table {
             # Add correct number of columns (one per property)
             foreach ($column in $columns) {
                 $table.columns += @{
-                    width = 'auto'
+                    width = 1 # 'auto' worked fine before, but now results in unaligned tables in teams channels, soo.. 1.
                 }
             }
 
