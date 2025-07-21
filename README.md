@@ -1,3 +1,6 @@
+![PowerShell](https://img.shields.io/badge/PowerShell-5+-blue)
+![PowerShell Gallery Downloads](https://img.shields.io/powershellgallery/dt/PSAdaptiveCards)
+
 # PSAdaptiveCards
 The PSAdaptiveCard PowerShell module designed to create JSON-formatted Adaptive Cards. Adaptive Cards are a way to present content in applications such as Microsoft Teams. This module includes functions to construct various elements of an Adaptive Card, and a function for posting these messages to Teams channels using Workflow webhooks.
 
